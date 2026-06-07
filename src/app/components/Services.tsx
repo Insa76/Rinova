@@ -102,7 +102,7 @@ export function Services() {
         shadow-2xl
       "
     >
-      <h3 className="text-3xl text-blue-500 mb-8">
+      <h3 className="text-3xl text-gray-800 mb-8">
         Inmobiliaria Tradicional
       </h3>
 
@@ -146,7 +146,7 @@ export function Services() {
         shadow-2xl
       "
     >
-      <h3 className="text-3xl text-blue-500 mb-8">
+      <h3 className="text-3xl text-gray-800 mb-8">
         Rinova
       </h3>
 

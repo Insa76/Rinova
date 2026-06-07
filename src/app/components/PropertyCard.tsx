@@ -38,7 +38,7 @@ export function PropertyCard({
   rounded-2xl
   overflow-hidden
   shadow-lg
-  hover:shadow-blue-300
+  hover:shadow-black/70
   transition-all
   duration-300
   h-full
@@ -54,7 +54,7 @@ export function PropertyCard({
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.4 }}
         />
-        <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm">
+        <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm text-gray-900">
           {type}
         </div>
         <motion.button

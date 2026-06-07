@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { PropertyCard } from "./PropertyCard";
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
+import { Link } from "react-router-dom";
 import depto from "../../assets/depto.jpg";
 
 const properties = [
@@ -163,7 +164,9 @@ export function Properties() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
                 >
-                  <PropertyCard {...property} />
+                  <Link to={`/propiedad/${property.id}`}>
+                    <PropertyCard {...property} />
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -172,11 +175,11 @@ export function Properties() {
           {/* Mapa */}
           <div className="lg:col-span-1 flex">
             <div className="sticky top-28 w-full h-full">
-              <div className="overflow-hidden rounded-[24px] shadow-2xl ">
+              <div className="overflow-hidden rounded-[24px] shadow-2xl shadow-black/80">
                 <iframe
                   title="Mapa Punta del Este"
                   src="https://maps.google.com/maps?q=Punta%20del%20Este&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                   className="w-full h-[620px] border-0"
+                  className="w-full h-[620px] border-0"
                   loading="lazy"
                 />
               </div>
@@ -211,8 +214,8 @@ export function Properties() {
               w-10 h-10 rounded-full transition-all
             ${
               currentPage === index + 1
-            ? "bg-[#7EC8E3] text-white"
-            : "bg-white text-black"
+                ? "bg-[#7EC8E3] text-white"
+                : "bg-white text-black"
             }
           `}
             >

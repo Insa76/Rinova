@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import heroBg from "../../assets/images/hero.jpg";
+import heroBg from "../../assets/images/C.png";
 
 export function Hero() {
   const [propertyType, setPropertyType] = useState("");
@@ -9,20 +9,42 @@ export function Hero() {
   const [rooms, setRooms] = useState("");
 
   return (
-    <section className="bg-[#F4EFE7] px-4 pt-4">
+    <section
+  className="relative px-4 pt-4 shadow-xl shadow-black/70"
+  style={{
+    backgroundImage: `url(${heroBg})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    
+  }}
+>
+      {/* Overlay 
+        <div className="absolute inset-0 bg-black/30" />*/}
+
       <div
-        className="relative overflow-hidden rounded-[32px] h-[850px]"
+         className="
+    relative
+    overflow-visible
+    
+    rounded-[32px]
+    w-[85%]
+    max-w-[1600px]
+    mx-auto
+    h-[650px]
+    mt-24
+  "
         style={{
-          backgroundImage: `url(${heroBg})`,
+          //backgroundImage: `url(${heroBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/30" />
+        {/* Overlay 
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-xs rounded-[32px]" />*/}
 
         {/* Contenido */}
-        <div className="relative z-10 h-full flex flex-col justify-end px-10 py-12 md:px-16">
+        <div className="relative z-10 h-full flex flex-col justify-end px-10 py-40 md:px-16">
           {/* Tags */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -31,10 +53,10 @@ export function Hero() {
             className="flex gap-3 mb-6"
           >
 
-            <p className="text-3xl md:text-3xl italic text-white/90 mb-2">
+             {/*<p className="text-3xl md:text-3xl italic text-white/90 mb-2">
               Comprar. Vender. Alquilar.
             </p>
-            {/*<span className="bg-white text-black px-4 py-2 rounded-full text-sm">
+           <span className="bg-white text-black px-4 py-2 rounded-full text-sm">
               Casas
             </span>
 
@@ -64,9 +86,8 @@ export function Hero() {
     tracking-tight
   "
 >
-              Propiedades
-              <br />
-              de Alto Nivel
+              Propiedades de Alto Nivel       
+              
             </h1>
           </motion.div>
 
@@ -91,19 +112,28 @@ export function Hero() {
 
           {/* Buscador */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-6"
-          >
-            <div className="bg-white/30 rounded-[28px] p-6 shadow-2xl">
-              <h3 className="text-3xl mb-6 text-black">
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.5 }}
+  className="
+    
+    absolute
+    left-1/2
+    -translate-x-1/2
+    bottom-[-90px]
+    z-30
+    w-[92%]
+    max-w-7xl
+  "
+>
+            <div className="bg-black/90 rounded-[28px] p-6 shadow-2xl ">
+              <h3 className="text-3xl mb-6 text-white">
                 Encontrá tu propiedad ideal
               </h3>
 
               <div className="grid md:grid-cols-5 gap-4">
                 <div>
-                  <label className="text-sm text-gray-900 block mb-2">
+                  <label className="text-sm text-gray-400 block mb-2">
                     Tipo
                   </label>
 
@@ -116,7 +146,7 @@ export function Hero() {
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-900 block mb-2">
+                  <label className="text-sm text-gray-400 block mb-2">
                     Precio
                   </label>
 
@@ -133,7 +163,7 @@ export function Hero() {
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-900 block mb-2">
+                  <label className="text-sm text-gray-400 block mb-2">
                     Ubicación
                   </label>
 
@@ -146,7 +176,7 @@ export function Hero() {
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-900 block mb-2">
+                  <label className="text-sm text-gray-400 block mb-2">
                     Ambientes
                   </label>
 
@@ -171,6 +201,7 @@ export function Hero() {
                       text-white
                       py-3
                       rounded-full
+                      border-2 border-white/30
                       hover:bg-neutral-800
                       transition-all
                     "

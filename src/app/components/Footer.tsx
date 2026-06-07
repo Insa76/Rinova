@@ -13,13 +13,14 @@ export function Footer() {
   <section className="bg-[#F4EFE7] px-4 pb-4 ">
     <footer
       className="
-        text-blue-500
+        text-gray-900
         rounded-b-[32px]
         overflow-hidden
         pt-16
         pb-8
         shadow-xl
-        border-1 border-gray-300
+        border-1 border-gray-500
+        shadow-xl shadow-black/70
       "
     >
       <div className="container mx-auto px-4">
@@ -30,16 +31,16 @@ export function Footer() {
             whileHover={{ scale: 1.03 }}
             className="flex items-center gap-3 cursor-pointer"
           >
-            <div className="w-10 h-10 border border-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-blue-500 text-sm">R</span>
+            <div className="w-10 h-10 border border-gray-900 rounded-lg flex items-center justify-center">
+              <span className="text-gray-900 text-sm">R</span>
             </div>
 
             <div>
-              <div className="text-blue-500 text-xl font-semibold tracking-wide">
+              <div className="text-gray-900 text-xl font-semibold tracking-wide">
                 RINOVA
               </div>
 
-              <div className="text-blue-500 text-xs uppercase tracking-[3px]">
+              <div className="text-gray-900 text-xs uppercase tracking-[3px]">
                 Real Estate
               </div>
             </div>

@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
@@ -15,136 +14,118 @@ export function Navbar() {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="absolute top-0 left-0 right-0 z-50"
+    <nav
+      className="
+        absolute
+        left-8
+        top-1/2
+        -translate-y-1/2
+        z-[9999]
+        hidden
+        lg:block
+      "
     >
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="flex items-center justify-between h-34">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            className="flex items-center gap-3 cursor-pointer"
-          >
-            <div className="w-15 h-15 border border-black rounded-lg flex items-center justify-center">
-              <span className="text-black text-xl">R</span>
-            </div>
-
-            <div>
-              <div className="font-heading text-black text-xl font-semibold tracking-wide">
-                RINOVA
-              </div>
-
-              <div className="font-heading text-black/70 text-xl uppercase tracking-[3px]">
-                Real Estate
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-10">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.label}
-                href={item.href}
-                whileHover={{ y: -2 }}
-                className="font-heading text-black/90 hover:text-black transition-colors text-sm tracking-wide"
-              >
-                {item.label}
-              </motion.a>
-            ))}
-          </div>
-
-          {/* Idioma + Login */}
-<div className="hidden lg:flex items-center gap-4">
-
-  {/* Selector de idioma */}
-  <div className="flex items-center bg-white/15 backdrop-blur-md rounded-full p-1 border border-white/20">
-    <div className="font-heading text-white text-sm font-medium">
-  <button className="text-white">ES</button>
-  <span className="mx-2 text-white/50">|</span>
-  <button className="font-heading text-white/60 hover:text-white">
-    EN
-  </button>
-</div>
-  </div>
-
-  {/* Login */}
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    className="
-      bg-white
-      text-black
-      px-7
-      py-3
-      rounded-full
-      font-medium
-      shadow-lg
-    "
-  >
-    Login
-  </motion.button>
-
-</div>
-
-          {/* Mobile */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white"
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
+      <motion.div
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="
+          w-[110px]
+          bg-white/10
+          backdrop-blur-xl
+          border
+          border-white/20
+          rounded-[32px]
+          py-8
+          px-4
+          flex
+          flex-col
+          items-center
+          shadow-2xl
+        "
+      >
+        {/* Logo */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="mb-10 cursor-pointer"
+        >
+          <div
             className="
-              lg:hidden
-              bg-white/95
-              backdrop-blur-md
-              rounded-2xl
-              p-6
-              shadow-xl
+              w-14
+              h-14
+              border
+              border-white/40
+              rounded-xl
+              flex
+              items-center
+              justify-center
+              text-white
+              text-xl
             "
           >
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="
-                    text-gray-800
-                    hover:text-sky-500
-                    transition-colors
-                  "
-                >
-                  {item.label}
-                </a>
-              ))}
+            R
+          </div>
+        </motion.div>
 
-              <button
-                className="
-                  font-heading
-                  mt-4
-                  bg-black
-                  text-white
-                  py-3
-                  rounded-full
-                "
-              >
-                Login
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </motion.nav>
+        {/* Menú */}
+        <div className="flex flex-col gap-6 items-center">
+          {navItems.map((item) => (
+            <motion.a
+              key={item.label}
+              href={item.href}
+              whileHover={{ x: 4 }}
+              className="
+                text-white/80
+                hover:text-white
+                text-sm
+                tracking-wide
+                transition-all
+                text-center
+              "
+            >
+              {item.label}
+            </motion.a>
+          ))}
+        </div>
+
+        {/* Idioma */}
+        <div
+          className="
+            mt-10
+            pt-6
+            border-t
+            border-white/20
+            w-full
+            text-center
+          "
+        >
+          <div className="text-white text-sm">
+            <button className="font-semibold">ES</button>
+            <span className="mx-2 text-white/40">|</span>
+            <button className="text-white/60 hover:text-white">
+              EN
+            </button>
+          </div>
+        </div>
+
+        {/* Login */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="
+            mt-8
+            w-full
+            bg-black
+            text-white
+            py-3
+            rounded-full
+            text-sm
+            shadow-xl
+          "
+        >
+          Login
+        </motion.button>
+      </motion.div>
+    </nav>
   );
 }

@@ -113,7 +113,7 @@ export function ContactForm() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             onSubmit={handleSubmit}
-            className="bg-gray-600 p-8 rounded-2xl"
+            className="bg-black/90 p-8 rounded-2xl"
           >
             <div className="space-y-6">
               <div>
@@ -127,7 +127,7 @@ export function ContactForm() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-gray-500 border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-[#F4EFE7] border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
                 />
               </div>
 
@@ -142,7 +142,7 @@ export function ContactForm() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-gray-500 border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-[#F4EFE7] border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
                 />
               </div>
 
@@ -157,7 +157,7 @@ export function ContactForm() {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-gray-500 border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-[#F4EFE7] border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all"
                 />
               </div>
 
@@ -172,7 +172,7 @@ export function ContactForm() {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-500 border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-[#F4EFE7] border border-transparent focus:border-[#7EC8E3] focus:outline-none transition-all resize-none"
                 />
               </div>
 
