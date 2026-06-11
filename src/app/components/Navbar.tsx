@@ -1,23 +1,45 @@
 import { motion } from "motion/react";
-import { useState } from "react";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const navItems = [
-    { label: "Inicio", href: "#" },
-    { label: "Comprar", href: "#propiedades" },
-    { label: "Vender", href: "#servicios" },
-    { label: "Alquilar", href: "#nosotros" },
-    { label: "Nosotros", href: "#nosotros" },
-    { label: "Contacto", href: "#contacto" },
+  const items = [
+    {
+      short: "RE",
+      label: "Real Estate",
+      target: "real-estate",
+    },
+    {
+      short: "PM",
+      label: "Management",
+      target: "management",
+    },
+    {
+      short: "RT",
+      label: "Renta",
+      target: "renta",
+    },
+    {
+      short: "IA",
+      label: "Concierge",
+      target: "concierge",
+    },
   ];
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   return (
     <nav
       className="
         absolute
-        left-8
+        right-8
         top-1/2
         -translate-y-1/2
         z-[9999]
@@ -30,14 +52,14 @@ export function Navbar() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         className="
-          w-[110px]
-          bg-white/10
+          w-[95px]
+          bg-black/25
           backdrop-blur-xl
           border
-          border-white/20
+          border-white/15
           rounded-[32px]
           py-8
-          px-4
+          px-3
           flex
           flex-col
           items-center
@@ -53,77 +75,118 @@ export function Navbar() {
             className="
               w-14
               h-14
-              border
-              border-white/40
               rounded-xl
+              border
+              border-white/30
               flex
               items-center
               justify-center
               text-white
               text-xl
+              font-heading
             "
           >
             R
           </div>
         </motion.div>
 
-        {/* Menú */}
+        {/* Navegación */}
         <div className="flex flex-col gap-6 items-center">
-          {navItems.map((item) => (
-            <motion.a
-              key={item.label}
-              href={item.href}
-              whileHover={{ x: 4 }}
+          {items.map((item) => (
+            <motion.button
+              key={item.short}
+              whileHover={{
+                scale: 1.08,
+              }}
+              whileTap={{
+                scale: 0.95,
+              }}
+              onClick={() =>
+                scrollToSection(item.target)
+              }
               className="
-                text-white/80
-                hover:text-white
-                text-sm
-                tracking-wide
-                transition-all
-                text-center
+                group
+                flex
+                flex-col
+                items-center
               "
             >
-              {item.label}
-            </motion.a>
+              <span
+                className="
+                  text-white
+                  text-sm
+                  font-semibold
+                  tracking-widest
+                "
+              >
+                {item.short}
+              </span>
+
+              <span
+                className="
+                  text-[10px]
+                  text-white/50
+                  opacity-0
+                  group-hover:opacity-100
+                  transition-all
+                "
+              >
+                {item.label}
+              </span>
+            </motion.button>
           ))}
         </div>
 
-        {/* Idioma */}
+        {/* Separador */}
         <div
           className="
-            mt-10
-            pt-6
-            border-t
-            border-white/20
             w-full
-            text-center
+            border-t
+            border-white/10
+            my-8
           "
-        >
-          <div className="text-white text-sm">
-            <button className="font-semibold">ES</button>
-            <span className="mx-2 text-white/40">|</span>
-            <button className="text-white/60 hover:text-white">
-              EN
-            </button>
+        />
+
+        {/* Idioma */}
+        <div className="text-center">
+          <button className="text-white text-sm font-semibold">
+            ES
+          </button>
+
+          <div className="text-white/30 text-xs my-1">
+            |
           </div>
+
+          <button
+            className="
+              text-white/50
+              hover:text-white
+              text-sm
+            "
+          >
+            EN
+          </button>
         </div>
 
-        {/* Login */}
+        {/* Concierge */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() =>
+            scrollToSection("concierge")
+          }
           className="
             mt-8
             w-full
-            bg-black
-            text-white
-            py-3
+            bg-white
+            text-black
             rounded-full
-            text-sm
-            shadow-xl
+            py-3
+            text-xs
+            font-semibold
           "
         >
-          Login
+          IA
         </motion.button>
       </motion.div>
     </nav>

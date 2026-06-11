@@ -1,41 +1,82 @@
-import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { AnimatePresence } from "motion/react";
 
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { Properties } from "./components/Properties";
-import { Services } from "./components/Services";
-import { About } from "./components/About";
-import { ContactForm } from "./components/ContactForm";
 import { Footer } from "./components/Footer";
 
-import { PropertyDetail } from "./properties/PropertyDetail";
+import { ExperienceSelector } from "./components/ExperienceSelector";
 
-function HomePage() {
-  return (
-    <>
-      <Navbar />
-      <Hero />
-      <Properties />
-      <Services />
-      <About />
-      <ContactForm />
-      <Footer />
-    </>
-  );
-}
+import { RealEstateView } from "./views/RealEstateView";
+import { PropertyManagementView } from "./views/PropertyManagementView";
+import { RentaView } from "./views/RentaView";
+import { ConciergeView } from "./views/ConciergeView";
+
+type ExperienceType =
+  | null
+  | "real-estate"
+  | "management"
+  | "renta"
+  | "concierge";
 
 export default function App() {
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={<HomePage />}
-      />
+  const [activeExperience, setActiveExperience] =
+    useState<ExperienceType>(null);
 
-      <Route
-        path="/propiedad/:id"
-        element={<PropertyDetail />}
-      />
-    </Routes>
+  const goHome = () => {
+    setActiveExperience(null);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F4EFE7]">
+      <AnimatePresence mode="wait">
+        {activeExperience === null && (
+          <div key="home">
+            <Navbar />
+
+            <Hero />
+
+            <ExperienceSelector
+              onSelect={(experience) =>
+                setActiveExperience(
+                  experience as ExperienceType
+                )
+              }
+            />
+
+            <Footer />
+          </div>
+        )}
+
+        {activeExperience === "real-estate" && (
+          <div key="real-estate">
+            <RealEstateView onBack={goHome} />
+          </div>
+        )}
+
+        {activeExperience === "management" && (
+          <div key="management">
+            <PropertyManagementView onBack={goHome} />
+          </div>
+        )}
+
+        {activeExperience === "renta" && (
+          <div key="renta">
+            <RentaView onBack={goHome} />
+          </div>
+        )}
+
+        {activeExperience === "concierge" && (
+          <div key="concierge">
+            <ConciergeView onBack={goHome} />
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
