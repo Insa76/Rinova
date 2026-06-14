@@ -1,36 +1,63 @@
 import { Lead } from "../types/Lead";
 
-export const leadService = {
-  saveLead(lead: Lead) {
-    const existing = localStorage.getItem("rinova-leads");
+const STORAGE_KEY = "rinova-leads";
 
-    const leads: Lead[] = existing
-      ? JSON.parse(existing)
+export const leadService = {
+  getLeads(): Lead[] {
+    const data =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+    return data
+      ? JSON.parse(data)
       : [];
+  },
+
+  saveLead(lead: Lead) {
+    const leads =
+      this.getLeads();
 
     leads.push(lead);
 
     localStorage.setItem(
-      "rinova-leads",
+      STORAGE_KEY,
       JSON.stringify(leads)
     );
-
-    return lead;
   },
 
-  getLeads(): Lead[] {
-    const existing = localStorage.getItem(
-      "rinova-leads"
-    );
+  deleteLead(id: string) {
+    const leads =
+      this.getLeads();
 
-    return existing
-      ? JSON.parse(existing)
-      : [];
-  },
+    const filtered =
+      leads.filter(
+        (lead) =>
+          lead.id !== id
+      );
 
-  clear() {
-    localStorage.removeItem(
-      "rinova-leads"
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(filtered)
     );
   },
+  updateLead(
+  id: string,
+  updatedLead: Lead
+) {
+  const leads =
+    this.getLeads();
+
+  const updated =
+    leads.map((lead) =>
+      lead.id === id
+        ? updatedLead
+        : lead
+    );
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(updated)
+  );
+}
 };

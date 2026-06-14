@@ -1,82 +1,93 @@
-import { useState } from "react";
-import { AnimatePresence } from "motion/react";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
 
-import { Navbar } from "./components/Navbar";
-import { Hero } from "./components/Hero";
-import { Footer } from "./components/Footer";
-
-import { ExperienceSelector } from "./components/ExperienceSelector";
+import { HomePage } from "./routes/HomePage";
 
 import { RealEstateView } from "./views/RealEstateView";
 import { PropertyManagementView } from "./views/PropertyManagementView";
 import { RentaView } from "./views/RentaView";
 import { ConciergeView } from "./views/ConciergeView";
 
-type ExperienceType =
-  | null
-  | "real-estate"
-  | "management"
-  | "renta"
-  | "concierge";
+import { AdminLayout } from "./admin/AdminLayout";
+import { DashboardView } from "./admin/DashboardView";
+import { PropertiesView } from "./admin/PropertiesView";
+import { LeadsView } from "./admin/LeadsView";
+import { SettingsView } from "./admin/SettingsView";
+
+import { LoginView } from "./admin/LoginView";
+import { ProtectedRoute } from "./admin/ProtectedRoute";
 
 export default function App() {
-  const [activeExperience, setActiveExperience] =
-    useState<ExperienceType>(null);
-
-  const goHome = () => {
-    setActiveExperience(null);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-[#F4EFE7]">
-      <AnimatePresence mode="wait">
-        {activeExperience === null && (
-          <div key="home">
-            <Navbar />
+    <Routes>
 
-            <Hero />
+      {/* SITIO PÚBLICO */}
 
-            <ExperienceSelector
-              onSelect={(experience) =>
-                setActiveExperience(
-                  experience as ExperienceType
-                )
-              }
-            />
+      <Route
+        path="/"
+        element={<HomePage />}
+      />
 
-            <Footer />
-          </div>
-        )}
+      <Route
+        path="/real-estate"
+        element={<RealEstateView />}
+      />
 
-        {activeExperience === "real-estate" && (
-          <div key="real-estate">
-            <RealEstateView onBack={goHome} />
-          </div>
-        )}
+      <Route
+        path="/management"
+        element={<PropertyManagementView />}
+      />
 
-        {activeExperience === "management" && (
-          <div key="management">
-            <PropertyManagementView onBack={goHome} />
-          </div>
-        )}
+      <Route
+        path="/renta"
+        element={<RentaView />}
+      />
 
-        {activeExperience === "renta" && (
-          <div key="renta">
-            <RentaView onBack={goHome} />
-          </div>
-        )}
+      <Route
+        path="/concierge"
+        element={<ConciergeView />}
+      />
 
-        {activeExperience === "concierge" && (
-          <div key="concierge">
-            <ConciergeView onBack={goHome} />
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+      {/* LOGIN ADMIN */}
+
+      <Route
+        path="/admin/login"
+        element={<LoginView />}
+      />
+
+      {/* ADMIN PROTEGIDO */}
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={<DashboardView />}
+        />
+
+        <Route
+          path="properties"
+          element={<PropertiesView />}
+        />
+
+        <Route
+          path="leads"
+          element={<LeadsView />}
+        />
+
+        <Route
+          path="settings"
+          element={<SettingsView />}
+        />
+      </Route>
+
+    </Routes>
   );
 }

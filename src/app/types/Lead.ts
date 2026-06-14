@@ -5,6 +5,12 @@ export interface Lead {
 
   score: number;
 
+  name: string;
+
+  phone: string;
+
+  email: string;
+
   intent: string;
 
   budget: string;
@@ -12,6 +18,17 @@ export interface Lead {
   goal: string;
 
   zone: string;
+
+  summary: string;
+
+  conversation: string[];
+
+   status:
+    | "new"
+    | "contacted"
+    | "closed";
+
+  notes: string;  
 
   createdAt: string;
 }

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 import { ExperienceHero } from "../components/experience/ExperienceHero";
 import { ExperienceNavigator } from "../components/experience/ExperienceNavigator";
@@ -6,9 +7,6 @@ import { ExperienceCTA } from "../components/experience/ExperienceCTA";
 
 import propertyManagementHero from "../../assets/images/experiences/manageHero.jpeg";
 
-interface PropertyManagementViewProps {
-  onBack: () => void;
-}
 
 const phases = [
   {
@@ -33,19 +31,18 @@ const phases = [
   },
 ];
 
-export function PropertyManagementView({
-  onBack,
-}: PropertyManagementViewProps) {
+export function PropertyManagementView() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#F4EFE7]">
       
       <ExperienceHero
-        title="Property Management"
-        location="Punta del Este"
-        subtitle="Administramos propiedades como activos financieros de largo plazo."
-        image={propertyManagementHero}
-        onBack={onBack}
-      />
+  title="Property Management"
+  location="Punta del Este"
+  subtitle="Administramos propiedades como activos financieros de largo plazo."
+  image={propertyManagementHero}
+  onBack={() => navigate("/")}
+/>
 
       <ExperienceNavigator
         items={[

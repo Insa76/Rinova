@@ -1,17 +1,13 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 import { properties } from "../data/properties";
 import { PropertyCard } from "../properties/PropertyCard";
 import { ExperienceNavigator } from "../components/ExperienceNavigator";
 import realEstateHero from "../../assets/images/experiences/realHero.jpeg";
 
-interface RealEstateViewProps {
-  onBack: () => void;
-}
-
-export function RealEstateView({
-  onBack,
-}: RealEstateViewProps) {
+export function RealEstateView() {
+  const navigate = useNavigate();
   return (
     <motion.div
       layoutId="experience-real-estate"
@@ -76,20 +72,20 @@ export function RealEstateView({
             "
           >
             <button
-              onClick={onBack}
-              className="
-                absolute
-                top-8
-                left-8
-                bg-white
-                text-black
-                px-5
-                py-3
-                rounded-full
-              "
-            >
-              ← Volver
-            </button>
+  onClick={() => navigate("/")}
+  className="
+    absolute
+    top-8
+    left-8
+    bg-white
+    text-black
+    px-5
+    py-3
+    rounded-full
+  "
+>
+  ← Volver
+</button>
 
             <span
               className="

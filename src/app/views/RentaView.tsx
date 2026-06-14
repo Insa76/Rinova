@@ -1,14 +1,12 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 import rentaHero from "../../assets/images/experiences/rentaHero.jpeg";
 
-interface RentaViewProps {
-  onBack: () => void;
-}
 
-export function RentaView({
-  onBack,
-}: RentaViewProps) {
+
+export function RentaView() {
+  const navigate = useNavigate();
   return (
     <motion.div
       layoutId="experience-renta"
@@ -64,7 +62,7 @@ export function RentaView({
       "
     >
       <button
-        onClick={onBack}
+        onClick={() => navigate("/")}
         className="
           absolute
           top-8

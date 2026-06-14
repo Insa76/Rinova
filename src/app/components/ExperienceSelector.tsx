@@ -1,55 +1,52 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import realEstateImg from "../../assets/images/rinova/real.jpeg";
 import propertyManagementImg from "../../assets/images/rinova/manage.jpeg";
 import rentaImg from "../../assets/images/rinova/renta.jpeg";
 import conciergeImg from "../../assets/images/rinova/concierge.jpeg";
 
-interface ExperienceSelectorProps {
-  onSelect: (experience: string) => void;
-}
-
 const experiences = [
-  
   {
     id: "management",
     title: "Property Management",
     subtitle:
       "Administración integral y preservación de activos inmobiliarios.",
-    image:
-      propertyManagementImg,
+    image: propertyManagementImg,
+    route: "/management",
   },
   {
     id: "renta",
     title: "Renta Inteligente",
     subtitle:
       "Maximizamos la rentabilidad de tu propiedad durante todo el año.",
-    image:
-      rentaImg,
+    image: rentaImg,
+    route: "/renta",
   },
   {
     id: "real-estate",
     title: "Real Estate",
     subtitle:
       "Compra, venta e inversión inmobiliaria premium en Punta del Este.",
-    image:
-      realEstateImg,
+    image: realEstateImg,
+    route: "/real-estate",
   },
   {
     id: "concierge",
     title: "Concierge IA",
     subtitle:
       "Asistencia inteligente para propietarios, compradores e inversores.",
-    image:
-      conciergeImg,
+    image: conciergeImg,
+    route: "/concierge",
   },
 ];
 
-export function ExperienceSelector({
-  onSelect,
-}: ExperienceSelectorProps) {
-  const [hovered, setHovered] = useState<string | null>(null);
+export function ExperienceSelector() {
+  const [hovered, setHovered] =
+    useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   return (
     <section
@@ -62,6 +59,7 @@ export function ExperienceSelector({
       "
     >
       <div className="max-w-7xl mx-auto">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -87,7 +85,9 @@ export function ExperienceSelector({
             <motion.div
               key={experience.id}
               layoutId={`experience-${experience.id}`}
-              onClick={() => onSelect(experience.id)}
+              onClick={() =>
+                navigate(experience.route)
+              }
               onHoverStart={() =>
                 setHovered(experience.id)
               }
@@ -224,6 +224,7 @@ export function ExperienceSelector({
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );

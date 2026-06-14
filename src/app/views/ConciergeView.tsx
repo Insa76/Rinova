@@ -1,17 +1,14 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 import { ExperienceHero } from "../components/experience/ExperienceHero";
-import { ConciergeChat } from "../concierge/ConciergeChat";
+import { ConciergeWizard } from "../concierge/ConciergeWizard";
 
 import conciergeHero from "../../assets/images/experiences/conciergeHero.jpeg";
 
-interface ConciergeViewProps {
-  onBack: () => void;
-}
+export function ConciergeView() {
+  const navigate = useNavigate();
 
-export function ConciergeView({
-  onBack,
-}: ConciergeViewProps) {
   return (
     <motion.div
       layoutId="experience-concierge"
@@ -34,12 +31,24 @@ export function ConciergeView({
         location="Rinova"
         subtitle="Una nueva forma de conectar personas, propiedades y oportunidades."
         image={conciergeHero}
-        onBack={onBack}
+        onBack={() => navigate("/")}
       />
 
-      {/* CHAT */}
+      {/* CONCIERGE */}
       <section className="px-8 py-20">
-        <ConciergeChat />
+        <div className="max-w-5xl mx-auto text-center mb-12">
+          <h2 className="font-heading text-5xl mb-4">
+            Contanos qué estás buscando
+          </h2>
+
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            Concierge IA te guiará paso a paso para comprender
+            tus objetivos, identificar oportunidades y conectarte
+            con el equipo adecuado.
+          </p>
+        </div>
+
+        <ConciergeWizard />
       </section>
 
       {/* BENEFICIOS */}
@@ -71,8 +80,9 @@ export function ConciergeView({
               </h3>
 
               <p className="text-gray-600">
-                Identificamos automáticamente el tipo de cliente,
-                necesidades y prioridades para brindarte una mejor experiencia.
+                Identificamos automáticamente el perfil,
+                objetivos y necesidades para brindar una
+                experiencia mucho más personalizada.
               </p>
             </div>
 
@@ -89,8 +99,9 @@ export function ConciergeView({
               </h3>
 
               <p className="text-gray-600">
-                Disponible en cualquier momento para responder consultas,
-                orientar decisiones y generar oportunidades.
+                Disponible en cualquier momento para orientar
+                decisiones, responder consultas y detectar
+                oportunidades.
               </p>
             </div>
 
@@ -107,15 +118,15 @@ export function ConciergeView({
               </h3>
 
               <p className="text-gray-600">
-                El equipo recibe información estructurada para intervenir
-                sólo cuando realmente aporta valor.
+                El equipo recibe información estructurada,
+                priorizada y lista para actuar.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* VISIÓN FUTURA */}
+      {/* CTA */}
       <section className="px-8 pb-24">
         <div
           className="
@@ -145,11 +156,10 @@ export function ConciergeView({
             "
           >
             Concierge IA no reemplaza a los asesores.
-            Los potencia.
-            Filtra consultas, identifica oportunidades,
-            organiza información y permite que el equipo
-            dedique más tiempo a las conversaciones que
-            realmente generan valor.
+            Los potencia. Identifica oportunidades,
+            estructura información, prioriza consultas
+            y permite que el equipo dedique su tiempo
+            a generar resultados.
           </p>
         </div>
       </section>
