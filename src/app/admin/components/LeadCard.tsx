@@ -101,6 +101,51 @@ export function LeadCard({
   {lead.name}
 </h3>
 
+<div className="flex gap-2 mb-3">
+  <span
+    className="
+      text-xs
+      px-3
+      py-1
+      rounded-full
+      bg-black
+      text-white
+    "
+  >
+    {lead.leadType}
+  </span>
+
+  <span
+    className={`
+      text-xs
+      px-3
+      py-1
+      rounded-full
+      text-white
+
+      ${
+        lead.temperature === "HOT"
+          ? "bg-red-600"
+          : lead.temperature === "WARM"
+          ? "bg-yellow-500"
+          : "bg-gray-500"
+      }
+    `}
+  >
+    {lead.temperature}
+  </span>
+</div>
+
+<div
+  className="
+    text-xs
+    text-gray-500
+    mt-2
+  "
+>
+  {lead.actionSuggestion}
+</div>
+
 <div className="text-sm text-gray-500 mb-3">
   {lead.email || lead.phone}
 </div>

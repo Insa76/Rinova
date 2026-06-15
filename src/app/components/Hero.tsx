@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import hero from "../../assets/images/rinova/hero.jpeg";
-import { Navbar } from "./Navbar";
+import { useLanguage } from "../../context/LanguageContext";
 
 export function Hero() {
   const scrollToExperiences = () => {
@@ -12,6 +12,8 @@ export function Hero() {
       });
     }
   };
+
+  const { language } = useLanguage();
 
   return (
     <section
@@ -95,7 +97,11 @@ export function Hero() {
                   border-white/20
                 "
               >
-                Punta del Este · Uruguay
+                {
+  language === "es"
+    ? "Punta del Este · Uruguay"
+    : "Punta del Este · Uruguay"
+}
               </span>
             </motion.div>
 
@@ -113,11 +119,11 @@ export function Hero() {
                 mt-8
               "
             >
-              Administración
-              <br />
-              Privada de
-              <br />
-              Activos Inmobiliarios
+              {
+  language === "es"
+    ? "Punta del Este · Uruguay"
+    : "Punta del Este · Uruguay"
+}
             </motion.h1>
 
             <motion.p
@@ -132,9 +138,15 @@ export function Hero() {
                 leading-relaxed
               "
             >
-              Compramos, gestionamos y rentabilizamos propiedades
-              en Punta del Este mediante un modelo de atención
-              boutique, tecnología e inteligencia artificial.
+              {
+  language === "es"
+    ? `Compramos, gestionamos y rentabilizamos propiedades
+en Punta del Este mediante un modelo de atención
+boutique, tecnología e inteligencia artificial.`
+    : `We acquire, manage and maximize the profitability
+of real estate assets in Punta del Este through
+a boutique service model, technology and artificial intelligence.`
+}
             </motion.p>
 
             <motion.div
@@ -156,7 +168,11 @@ export function Hero() {
                   transition-all
                 "
               >
-                Comenzar Experiencia
+                {
+  language === "es"
+    ? "Comenzar Experiencia"
+    : "Start Experience"
+}
               </button>
 
               <button
@@ -172,7 +188,11 @@ export function Hero() {
                   transition-all
                 "
               >
-                Conocer Rinova
+                {
+  language === "es"
+    ? "Conocer Rinova"
+    : "Discover Rinova"
+}
               </button>
             </motion.div>
           </div>

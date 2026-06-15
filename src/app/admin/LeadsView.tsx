@@ -16,11 +16,16 @@ export function LeadsView() {
   const [filter, setFilter] =
     useState("all");
 
-  useEffect(() => {
-    setLeads(
-      leadService.getLeads()
-    );
-  }, []);
+ useEffect(() => {
+  const loadLeads = async () => {
+    const data =
+      await leadService.getLeads();
+
+    setLeads(data);
+  };
+
+  loadLeads();
+}, []);
 
   const newCount =
     leads.filter(
@@ -217,11 +222,17 @@ export function LeadsView() {
 
       {/* DRAWER */}
       <LeadDetailDrawer
-        lead={selectedLead}
-        onClose={() =>
-          setSelectedLead(null)
-        }
-      />
+  lead={selectedLead}
+  onClose={() =>
+    setSelectedLead(null)
+  }
+  onUpdated={async () => {
+    const data =
+      await leadService.getLeads();
+
+    setLeads(data);
+  }}
+/>
     </div>
   );
 }

@@ -1,39 +1,39 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
+
+import {
+  useLanguage,
+} from "../../context/LanguageContext";
 
 export function Navbar() {
+  const navigate = useNavigate();
   const items = [
-    {
-      short: "RE",
-      label: "Real Estate",
-      target: "real-estate",
-    },
-    {
-      short: "PM",
-      label: "Management",
-      target: "management",
-    },
-    {
-      short: "RT",
-      label: "Renta",
-      target: "renta",
-    },
-    {
-      short: "IA",
-      label: "Concierge",
-      target: "concierge",
-    },
-  ];
+  {
+    short: "RE",
+    label: "Real Estate",
+    route: "/real-estate",
+  },
+  {
+    short: "PM",
+    label: "Management",
+    route: "/management",
+  },
+  {
+    short: "RT",
+    label: "Renta",
+    route: "/renta",
+  },
+  {
+    short: "IA",
+    label: "Concierge",
+    route: "/concierge",
+  },
+];
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
+  const {
+  language,
+  setLanguage,
+} = useLanguage();
 
   return (
     <nav
@@ -102,8 +102,8 @@ export function Navbar() {
                 scale: 0.95,
               }}
               onClick={() =>
-                scrollToSection(item.target)
-              }
+  navigate(item.route)
+}
               className="
                 group
                 flex
@@ -149,32 +149,44 @@ export function Navbar() {
 
         {/* Idioma */}
         <div className="text-center">
-          <button className="text-white text-sm font-semibold">
-            ES
-          </button>
+  <button
+    onClick={() =>
+      setLanguage("es")
+    }
+    className={
+      language === "es"
+        ? "text-white text-sm font-semibold"
+        : "text-white/50 text-sm"
+    }
+  >
+    ES
+  </button>
 
-          <div className="text-white/30 text-xs my-1">
-            |
-          </div>
+  <div className="text-white/30 text-xs my-1">
+    |
+  </div>
 
-          <button
-            className="
-              text-white/50
-              hover:text-white
-              text-sm
-            "
-          >
-            EN
-          </button>
-        </div>
+  <button
+    onClick={() =>
+      setLanguage("en")
+    }
+    className={
+      language === "en"
+        ? "text-white text-sm font-semibold"
+        : "text-white/50 text-sm"
+    }
+  >
+    EN
+  </button>
+</div>
 
         {/* Concierge */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() =>
-            scrollToSection("concierge")
-          }
+  navigate("/concierge")
+}
           className="
             mt-8
             w-full

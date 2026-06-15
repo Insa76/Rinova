@@ -1,63 +1,147 @@
 import { Lead } from "../types/Lead";
-
-const STORAGE_KEY = "rinova-leads";
+import { supabase } from "../../lib/supabase";
 
 export const leadService = {
-  getLeads(): Lead[] {
-    const data =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
+  async getLeads(): Promise<Lead[]> {
+    const { data, error } =
+      await supabase
+        .from("leads")
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
 
-    return data
-      ? JSON.parse(data)
-      : [];
-  },
-
-  saveLead(lead: Lead) {
-    const leads =
-      this.getLeads();
-
-    leads.push(lead);
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(leads)
-    );
-  },
-
-  deleteLead(id: string) {
-    const leads =
-      this.getLeads();
-
-    const filtered =
-      leads.filter(
-        (lead) =>
-          lead.id !== id
-      );
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(filtered)
-    );
-  },
-  updateLead(
-  id: string,
-  updatedLead: Lead
-) {
-  const leads =
-    this.getLeads();
-
-  const updated =
-    leads.map((lead) =>
-      lead.id === id
-        ? updatedLead
-        : lead
-    );
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(updated)
+    if (error) {
+  console.error(
+    "SUPABASE INSERT ERROR:",
+    error
   );
+
+  throw error;
 }
+
+    return (data || []).map(
+      (lead: any) => ({
+        id: lead.id,
+
+        name: lead.name,
+        phone: lead.phone,
+        email: lead.email,
+
+        intent: lead.intent,
+        budget: lead.budget,
+        goal: lead.goal,
+        zone: lead.zone,
+
+        profile: lead.profile,
+        leadType: lead.lead_type,
+        temperature:
+          lead.temperature,
+
+        score: lead.score,
+
+        summary: lead.summary,
+
+        status: lead.status,
+        notes: lead.notes,
+
+        conversation:
+          lead.conversation || [],
+
+        timeline:
+          lead.timeline || [],
+
+        createdAt:
+          lead.created_at,
+      })
+    );
+  },
+
+  async saveLead(
+    lead: Lead
+  ) {
+    const { error } =
+      await supabase
+        .from("leads")
+        .insert([
+          {
+            id: lead.id,
+
+            name: lead.name,
+            phone: lead.phone,
+            email: lead.email,
+
+            intent: lead.intent,
+            budget: lead.budget,
+            goal: lead.goal,
+            zone: lead.zone,
+
+            profile: lead.profile,
+
+            lead_type:
+              lead.leadType,
+
+            temperature:
+              lead.temperature,
+
+            score: lead.score,
+
+            summary:
+              lead.summary,
+
+            status: lead.status,
+
+            notes:
+              lead.notes,
+
+            conversation:
+              lead.conversation,
+
+            timeline:
+              lead.timeline,
+
+            created_at:
+              lead.createdAt,
+          },
+        ]);
+
+    if (error) {
+      console.error(error);
+    }
+  },
+
+  async updateLead(
+    id: string,
+    updatedLead: Lead
+  ) {
+    const { error } =
+      await supabase
+        .from("leads")
+        .update({
+          status:
+            updatedLead.status,
+
+          notes:
+            updatedLead.notes,
+        })
+        .eq("id", id);
+
+    if (error) {
+      console.error(error);
+    }
+  },
+
+  async deleteLead(
+    id: string
+  ) {
+    const { error } =
+      await supabase
+        .from("leads")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+      console.error(error);
+    }
+  },
 };

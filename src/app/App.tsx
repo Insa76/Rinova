@@ -19,8 +19,12 @@ import { SettingsView } from "./admin/SettingsView";
 import { LoginView } from "./admin/LoginView";
 import { ProtectedRoute } from "./admin/ProtectedRoute";
 
+import { ScrollToTop } from "./components/ScrollToTop";
+
 export default function App() {
   return (
+    <>
+      <ScrollToTop />
     <Routes>
 
       {/* SITIO PÚBLICO */}
@@ -89,5 +93,6 @@ export default function App() {
       </Route>
 
     </Routes>
+     </>
   );
 }

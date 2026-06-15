@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Lead } from "../types/Lead";
 import { leadService } from "../services/leadService";
 import { MessageBubble } from "../admin/components/MessageBubble";
+import { useLanguage } from "../../context/LanguageContext";
+import { conciergeTranslations } from "../../rinova/translations/concierge";
 
 type Step =
   | "intent"
@@ -14,6 +16,10 @@ type Step =
   | "success";
 
 export function ConciergeWizard() {
+  const { language } = useLanguage();
+
+  const t = conciergeTranslations[language];
+
   const [step, setStep] = useState<Step>("intent");
 
   const [lead, setLead] = useState({
@@ -26,8 +32,7 @@ export function ConciergeWizard() {
     email: "",
   });
 
-  const [conversation, setConversation] =
-  useState<string[]>([]);
+  const [conversation, setConversation] = useState<string[]>([]);
 
   const updateLead = (field: string, value: string) => {
     setLead((prev) => ({
@@ -36,30 +41,35 @@ export function ConciergeWizard() {
     }));
   };
 
-  const addConversation = (
-  speaker: string,
-  message: string
-) => {
-  setConversation((prev) => [
-    ...prev,
-    `${speaker}: ${message}`,
-  ]);
-};
+  const addConversation = (speaker: string, message: string) => {
+    setConversation((prev) => [...prev, `${speaker}: ${message}`]);
+  };
 
   const calculateScore = () => {
     let score = 50;
 
-    if (lead.intent === "Invertir") score += 15;
+    if (lead.intent === "INVEST") {
+      score += 15;
+    }
 
-    if (lead.budget === "USD 300.000 - 1M" || lead.budget === "Más de USD 1M") {
+    if (
+  lead.budget === "300K_1M" ||
+  lead.budget === "OVER_1M"
+) {
       score += 20;
     }
 
-    if (lead.zone === "José Ignacio" || lead.zone === "Playa Brava") {
+    if (
+  lead.zone === "JOSE_IGNACIO" ||
+  lead.zone === "BRAVA"
+) {
       score += 10;
     }
 
-    if (lead.goal === "Renta" || lead.goal === "Revalorización") {
+    if (
+  lead.goal === "INCOME" ||
+  lead.goal === "APPRECIATION"
+) {
       score += 15;
     }
 
@@ -75,36 +85,74 @@ export function ConciergeWizard() {
         ? "Inversor Calificado"
         : "Cliente Potencial";
 
+  const generateLeadType = () => {
+    switch (lead.intent) {
+      case "INVEST":
+        return "INVESTOR";
+
+      case "BUY":
+        return "BUYER";
+
+      case "SELL":
+        return "SELLER";
+
+      case "RENT":
+        return "OWNER";
+
+      case "MANAGEMENT":
+        return "OWNER";
+
+      default:
+        return "PROSPECT";
+    }
+  };
+
   const getAIAnalysis = () => {
+    if (language === "en") {
+      if (profile === "Inversor Premium") {
+        return `
+I detected a high-opportunity profile.
+
+Your budget, objectives and preferred area suggest strong compatibility with premium investment strategies.
+`;
+      }
+
+      if (profile === "Inversor Calificado") {
+        return `
+I detected a profile with strong investment potential.
+
+There are opportunities compatible with your objectives that could generate value in the medium and long term.
+`;
+      }
+
+      return `
+I detected a profile with development potential.
+
+I recommend a deeper evaluation together with a specialist advisor.
+`;
+    }
+
     if (profile === "Inversor Premium") {
       return `
-    Detecté un perfil de alta oportunidad.
+Detecté un perfil de alta oportunidad.
 
-    Tu combinación de presupuesto,
-    objetivos y zona de interés sugiere
-    potencial para estrategias de inversión
-    premium y generación de renta.
-    `;
+Tu combinación de presupuesto, objetivos y zona de interés sugiere potencial para estrategias de inversión premium.
+`;
     }
 
     if (profile === "Inversor Calificado") {
       return `
-    Detecté un perfil con buenas oportunidades
-    de inversión.
+Detecté un perfil con buenas oportunidades de inversión.
 
-    Existen activos compatibles con tus
-    objetivos que podrían generar valor
-    a mediano y largo plazo.
-    `;
+Existen activos compatibles con tus objetivos que podrían generar valor a mediano y largo plazo.
+`;
     }
 
     return `
-  Detecté un perfil con potencial de desarrollo.
+Detecté un perfil con potencial de desarrollo.
 
-  Recomiendo profundizar el análisis junto
-  a un asesor para identificar oportunidades
-  alineadas con tus objetivos.
-  `;
+Recomiendo profundizar el análisis junto a un asesor.
+`;
   };
 
   const getPriority = () => {
@@ -129,8 +177,39 @@ export function ConciergeWizard() {
   };
 
   const getRecommendation = () => {
+    if (language === "en") {
+      switch (lead.intent) {
+        case "INVEST":
+          return [
+            "Income producing properties",
+            "Playa Brava",
+            "Peninsula",
+            "Premium assets",
+          ];
+
+        case "BUY":
+          return [
+            "Permanent residence",
+            "Playa Mansa",
+            "Family-oriented areas",
+            "High construction quality",
+          ];
+
+        case "RENT":
+          return [
+            "Property Management",
+            "Short-term rentals",
+            "Occupancy optimization",
+            "Operational automation",
+          ];
+
+        default:
+          return ["Personalized advisory", "Opportunity analysis"];
+      }
+    }
+
     switch (lead.intent) {
-      case "Invertir":
+      case "INVEST":
         return [
           "Propiedades con renta comprobada",
           "Playa Brava",
@@ -138,7 +217,7 @@ export function ConciergeWizard() {
           "Activos premium",
         ];
 
-      case "Comprar":
+      case "BUY":
         return [
           "Vivienda permanente",
           "Playa Mansa",
@@ -146,7 +225,7 @@ export function ConciergeWizard() {
           "Alta calidad constructiva",
         ];
 
-      case "Generar renta":
+      case "RENT":
         return [
           "Property Management",
           "Alquiler temporal",
@@ -154,7 +233,7 @@ export function ConciergeWizard() {
           "Automatización operativa",
         ];
 
-      case "Administrar una propiedad":
+      case "MANAGEMENT":
         return [
           "Inspecciones periódicas",
           "Mantenimiento preventivo",
@@ -168,19 +247,15 @@ export function ConciergeWizard() {
   };
 
   const generateSummary = () => {
-  const opportunity =
-    score >= 85
-      ? "ALTO"
-      : score >= 70
-      ? "MEDIO"
-      : "INICIAL";
+    const opportunity =
+      score >= 85 ? "ALTO" : score >= 70 ? "MEDIO" : "INICIAL";
 
-  return `
-Lead interesado en ${lead.intent.toLowerCase()}.
+    return `
+Lead interesado en ${getIntentLabel()}.
 
-Objetivo principal: ${lead.goal}.
+Objetivo principal: ${getGoalLabel()}.
 
-Zona de interés: ${lead.zone}.
+Zona de interés: ${getZoneLabel()}.
 
 Presupuesto: ${lead.budget}.
 
@@ -191,13 +266,49 @@ ${
   score >= 85
     ? "Contactar prioritariamente."
     : score >= 70
-    ? "Agendar contacto dentro de las próximas 24 horas."
-    : "Mantener seguimiento y profundizar necesidades."
+      ? "Agendar contacto dentro de las próximas 24 horas."
+      : "Mantener seguimiento y profundizar necesidades."
 }
 `;
-};
+  };
 
-  const saveLead = () => {
+  const generateTemperature = () => {
+    if (score >= 85) {
+      return "HOT";
+    }
+
+    if (score >= 70) {
+      return "WARM";
+    }
+
+    return "COLD";
+  };
+
+  const generateActionSuggestion = () => {
+    if (score >= 90) {
+      return "Contactar inmediatamente.";
+    }
+
+    if (score >= 70) {
+      return "Agendar llamada dentro de las próximas 24 horas.";
+    }
+
+    return "Mantener seguimiento comercial.";
+  };
+
+  const generateOpportunityLevel = () => {
+    if (score >= 85) {
+      return "ALTO";
+    }
+
+    if (score >= 70) {
+      return "MEDIO";
+    }
+
+    return "INICIAL";
+  };
+
+  const saveLead = async () => {
     const newLead: Lead = {
       id: crypto.randomUUID(),
 
@@ -221,6 +332,21 @@ ${
 
       conversation,
 
+      timeline: [
+        {
+          date: new Date().toISOString(),
+          event: "Lead creado por Concierge IA",
+        },
+      ],
+
+      leadType: generateLeadType(),
+
+      temperature: generateTemperature(),
+
+      actionSuggestion: generateActionSuggestion(),
+
+      opportunityLevel: generateOpportunityLevel(),
+
       summary: generateSummary(),
 
       status: "new",
@@ -230,59 +356,114 @@ ${
       createdAt: new Date().toISOString(),
     };
 
-    leadService.saveLead(newLead);
+    try {
+      await leadService.saveLead(newLead);
 
-    setStep("success");
+      console.log("LEAD GUARDADO");
+
+      setStep("success");
+    } catch (error) {
+      console.error("ERROR GUARDANDO LEAD", error);
+    }
   };
 
-
   const generateAnalysis = () => {
-  if (lead.intent === "Invertir") {
-    return `
+    if (language === "en") {
+      if (lead.intent === "INVEST") {
+        return `
+I detected an interest in real estate investment focused on value generation.
+
+The selected budget, objectives and location indicate compatibility with investment opportunities in Punta del Este.
+
+My recommendation is to schedule a personalized evaluation with a specialist.
+`;
+      }
+
+      if (lead.intent === "BUY") {
+        return `
+I detected an interest in acquiring a property for personal or investment purposes.
+
+The information provided allows us to identify opportunities aligned with your objectives.
+
+My recommendation is to move forward with a personalized property selection.
+`;
+      }
+
+      if (lead.intent === "RENT") {
+        return `
+I detected an objective focused on maximizing property profitability.
+
+There are management and operational strategies that can significantly improve occupancy and returns.
+
+My recommendation is to analyze the property's rental potential with Rinova.
+`;
+      }
+
+      return `
+I analyzed the information provided and identified opportunities aligned with your objectives.
+
+My recommendation is to continue with a personalized review together with the Rinova team.
+`;
+    }
+
+    // ESPAÑOL
+
+    if (lead.intent === "INVEST") {
+      return `
 Detecté interés en inversión inmobiliaria orientada a generación de valor.
 
 La combinación de presupuesto, objetivos y zona seleccionada indica compatibilidad con oportunidades de inversión dentro de Punta del Este.
 
 Mi recomendación es realizar una evaluación personalizada con un especialista para identificar activos alineados con tu estrategia patrimonial.
 `;
-  }
+    }
 
-  if (lead.intent === "Comprar") {
-    return `
+    if (lead.intent === "BUY") {
+      return `
 Detecté interés en adquisición de propiedad para uso personal o patrimonial.
 
 La información compartida permite identificar alternativas compatibles con tus objetivos y preferencias de ubicación.
 
 Mi recomendación es avanzar con una selección personalizada de oportunidades.
 `;
-  }
+    }
 
-  if (lead.intent === "Generar renta") {
-    return `
+    if (lead.intent === "RENT") {
+      return `
 Detecté una necesidad orientada a maximizar la rentabilidad de una propiedad.
 
 Existen estrategias de operación y gestión que podrían mejorar significativamente la ocupación y el rendimiento del activo.
 
 Mi recomendación es analizar el potencial de renta junto al equipo de Rinova.
 `;
-  }
+    }
 
-  if (lead.intent === "Administrar una propiedad") {
     return `
-Identifiqué una necesidad vinculada a administración y preservación de activos inmobiliarios.
-
-La gestión profesional permite reducir incidencias operativas y mejorar la experiencia de propietarios e inquilinos.
-
-Mi recomendación es evaluar una propuesta de Property Management personalizada.
-`;
-  }
-
-  return `
 He analizado la información compartida y considero que existen oportunidades compatibles con los objetivos planteados.
 
 Mi recomendación es avanzar con una revisión personalizada junto al equipo de Rinova.
 `;
-};
+  };
+
+  const getIntentLabel = () =>
+  t.intents.find(
+    (i) => i.value === lead.intent
+  )?.label ?? lead.intent;
+
+const getGoalLabel = () =>
+  t.goals.find(
+    (i) => i.value === lead.goal
+  )?.label ?? lead.goal;
+
+const getZoneLabel = () =>
+  t.zones.find(
+    (i) => i.value === lead.zone
+  )?.label ?? lead.zone;
+
+const getBudgetLabel = () =>
+  t.budgets.find(
+    (i) => i.value === lead.budget
+  )?.label ?? lead.budget;  
 
   return (
     <div
@@ -318,13 +499,10 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               mt-4
             "
           >
-            Hola, soy SofIA.
+            {t.title}
           </h2>
 
-          <p className="text-gray-500 mt-3">
-            Voy a ayudarte a encontrar la mejor solución para tus objetivos
-            inmobiliarios.
-          </p>
+          <p className="text-gray-500 mt-3">{t.subtitle}</p>
         </div>
 
         <AnimatePresence mode="wait">
@@ -336,49 +514,35 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               exit={{ opacity: 0 }}
             >
               <MessageBubble>
-                Hola.
-                <br />
-                <br />
-                Soy SofIA, Concierge IA de Rinova. Mi objetivo es ayudarte a
-                identificar oportunidades inmobiliarias alineadas con tus
-                objetivos.
-                <br />
-                <br />
-                Comencemos.
+                <div className="whitespace-pre-line">{t.welcomeMessage}</div>
               </MessageBubble>
-              <h3 className="text-2xl mb-6">¿Qué te gustaría hacer?</h3>
+              <h3 className="text-2xl mb-6">{t.intentQuestion}</h3>
 
               <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  "Comprar",
-                  "Vender",
-                  "Invertir",
-                  "Generar renta",
-                  "Administrar una propiedad",
-                ].map((item) => (
+                {t.intents.map((item) => (
                   <button
-                    key={item}
+                    key={item.value}
                     onClick={() => {
-  updateLead("intent", item);
+                      updateLead("intent", item.value);
 
-  addConversation(
-    "Usuario",
-    `Interés: ${item}`
-  );
+                      addConversation(
+                        language === "en" ? "User" : "Usuario",
+                        item.label,
+                      );
 
-  setStep("budget");
-}}
+                      setStep("budget");
+                    }}
                     className="
-                      p-5
-                      bg-[#F4EFE7]
-                      rounded-2xl
-                      text-left
-                      hover:bg-black
-                      hover:text-white
-                      transition-all
+                    p-5
+                    bg-[#F4EFE7]
+                    rounded-2xl
+                    text-left
+                    hover:bg-black
+                    hover:text-white
+                    transition-all
                     "
                   >
-                    {item}
+                    {item.label}
                   </button>
                 ))}
               </div>
@@ -393,31 +557,20 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               exit={{ opacity: 0 }}
             >
               <MessageBubble>
-                Excelente.
-                <br />
-                <br />
-                Conocer tu presupuesto me ayuda a identificar oportunidades
-                realmente compatibles con tu perfil.
+                <div className="whitespace-pre-line">{t.budgetMessage}</div>
               </MessageBubble>
-              <h3 className="text-2xl mb-6">
-                ¿Cuál es tu presupuesto estimado?
-              </h3>
+              <h3 className="text-2xl mb-6">{t.budgetQuestion}</h3>
 
               <div className="grid gap-4">
-                {[
-                  "Menos de USD 100.000",
-                  "USD 100.000 - 300.000",
-                  "USD 300.000 - 1M",
-                  "Más de USD 1M",
-                ].map((item) => (
+                {t.budgets.map((item) => (
                   <button
-                    key={item}
+                    key={item.value}
                     onClick={() => {
-                      updateLead("budget", item);
+                      updateLead("budget", item.value);
                       addConversation(
-  "Usuario",
-  `Presupuesto: ${item}`
-);
+                        language === "en" ? "User" : "Usuario",
+                        item.label,
+                      );
                       setStep("goal");
                     }}
                     className="
@@ -430,7 +583,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                       transition-all
                     "
                   >
-                    {item}
+                    {item.label}
                   </button>
                 ))}
               </div>
@@ -445,28 +598,21 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               exit={{ opacity: 0 }}
             >
               <MessageBubble>
-                Perfecto.
-                <br />
-                <br />
-                Ahora necesito entender qué resultado esperás obtener para
-                recomendar la mejor estrategia.
+                <div className="whitespace-pre-line">{t.goalMessage}</div>
               </MessageBubble>
-              <h3 className="text-2xl mb-6">¿Qué buscás principalmente?</h3>
+              <h3 className="text-2xl mb-6">{t.goalQuestion}</h3>
 
               <div className="grid gap-4">
-                {["Renta", "Revalorización", "Uso personal", "Uso mixto"].map(
-                  (item) => (
-                    <button
-                      key={item}
-                      onClick={() => {
-                        updateLead("goal", item);
-                        addConversation(
-  "Usuario",
-  `Objetivo: ${item}`
-);
-                        setStep("zone");
-                      }}
-                      className="
+                {t.goals.map((item) => (
+                  <button
+                    key={item.value}
+                    onClick={() => {
+                      updateLead("goal", item.value);
+
+                      addConversation("Usuario", item.label);
+                      setStep("zone");
+                    }}
+                    className="
                       p-5
                       bg-[#F4EFE7]
                       rounded-2xl
@@ -475,11 +621,10 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                       hover:text-white
                       transition-all
                     "
-                    >
-                      {item}
-                    </button>
-                  ),
-                )}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
             </motion.div>
           )}
@@ -492,30 +637,18 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               exit={{ opacity: 0 }}
             >
               <MessageBubble>
-                Punta del Este tiene mercados muy diferentes.
-                <br />
-                <br />
-                Algunas zonas se destacan por renta, otras por revalorización y
-                otras por calidad de vida.
+                <div className="whitespace-pre-line">{t.zoneMessage}</div>
               </MessageBubble>
-              <h3 className="text-2xl mb-6">¿Qué zona te interesa?</h3>
+              <h3 className="text-2xl mb-6">{t.zoneQuestion}</h3>
 
               <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  "Península",
-                  "Playa Mansa",
-                  "Playa Brava",
-                  "José Ignacio",
-                  "No estoy seguro",
-                ].map((item) => (
+                {t.zones.map((item) => (
                   <button
-                    key={item}
+                    key={item.value}
                     onClick={() => {
-                      updateLead("zone", item);
-                      addConversation(
-  "Usuario",
-  `Zona: ${item}`
-);
+                      updateLead("zone", item.value);
+
+                      addConversation("Usuario", item.label);
                       setStep("summary");
                     }}
                     className="
@@ -528,7 +661,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                       transition-all
                     "
                   >
-                    {item}
+                    {item.label}
                   </button>
                 ))}
               </div>
@@ -542,19 +675,12 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               animate={{ opacity: 1 }}
             >
               <MessageBubble>
-                Ya tengo suficiente información.
-                <br />
-                <br />
-                Analicé tu perfil y preparé una evaluación preliminar junto con
-                recomendaciones alineadas a tus objetivos.
+                <div className="whitespace-pre-line">{t.summaryMessage}</div>
               </MessageBubble>
 
-              <h3 className="text-3xl mb-4">Evaluación SofIA</h3>
+              <h3 className="text-3xl mb-4">{t.summaryTitle}</h3>
 
-              <p className="text-gray-500 mb-8">
-                Analicé la información compartida y detecté una oportunidad
-                compatible con tu perfil.
-              </p>
+              <p className="text-gray-500 mb-8">{t.summarySubtitle}</p>
 
               <div
                 className="
@@ -566,14 +692,14 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                 <div className="space-y-4 mb-8">
                   <div
                     className="
-      bg-white
-      rounded-[20px]
-      p-5
-      border
-      border-gray-200
-    "
+                    bg-white
+                    rounded-[20px]
+                    p-5
+                    border
+                    border-gray-200
+                    "
                   >
-                    ✓ Perfil compatible con oportunidades premium de Rinova.
+                    ✓ {t.premiumProfile}
                   </div>
 
                   <div
@@ -585,7 +711,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                     border-gray-200
                     "
                   >
-                    ✓ Objetivos alineados con nuestra cartera de propiedades.
+                    ✓ {t.alignedGoals}
                   </div>
 
                   <div
@@ -597,7 +723,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                     border-gray-200
                     "
                   >
-                    ✓ Zona con potencial de desarrollo e inversión.
+                    ✓ {t.highPotentialZone}
                   </div>
                 </div>
 
@@ -611,7 +737,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   "
                 >
                   <div className="text-sm opacity-70 mb-2">
-                    Nivel de oportunidad
+                    {t.opportunityLevel}
                   </div>
 
                   <div className="text-5xl font-heading">
@@ -619,8 +745,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   </div>
 
                   <p className="mt-4 text-white/70">
-                    Esta evaluación preliminar permite a nuestro equipo
-                    identificar oportunidades compatibles con tus objetivos.
+                    {t.opportunityDescription}
                   </p>
                 </div>
 
@@ -636,46 +761,44 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                     ${getPriority().color}
                   `}
                   >
-                    Prioridad {getPriority().label}
+                    {t.priority} {getPriority().label}
                   </span>
                 </div>
 
                 <div className="space-y-3 text-lg">
                   <p>
-                    <strong>Interés:</strong> {lead.intent}
+                    <strong>{t.interestLabel}:</strong> {getIntentLabel()}
                   </p>
 
                   <p>
-                    <strong>Presupuesto:</strong> {lead.budget}
+                    <strong>{t.budgetLabel}:</strong> {getBudgetLabel()}
                   </p>
 
                   <p>
-                    <strong>Objetivo:</strong> {lead.goal}
+                    <strong>{t.goalLabel}:</strong> {getGoalLabel()}
                   </p>
 
                   <p>
-                    <strong>Zona:</strong> {lead.zone}
+                    <strong>{t.zoneLabel}:</strong> {getZoneLabel()}
                   </p>
                 </div>
 
                 <div
-  className="
-    mt-8
-    bg-white
-    border
-    border-gray-200
-    rounded-[28px]
-    p-8
-  "
->
-  <h3 className="text-2xl mb-4">
-    Análisis SofIA
-  </h3>
+                  className="
+                  mt-8
+                  bg-white
+                  border
+                  border-gray-200
+                  rounded-[28px]
+                  p-8
+                  "
+                >
+                  <h3 className="text-2xl mb-4">{t.analysisTitle}</h3>
 
-  <p className="leading-relaxed text-gray-700 whitespace-pre-line">
-    {generateAnalysis()}
-  </p>
-</div>
+                  <p className="leading-relaxed text-gray-700 whitespace-pre-line">
+                    {generateAnalysis()}
+                  </p>
+                </div>
 
                 <div
                   className="
@@ -687,7 +810,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   border-gray-200
                   "
                 >
-                  <h3 className="text-xl mb-4">Análisis de SofIA</h3>
+                  <h3 className="text-xl mb-4">{t.analysisTitle}</h3>
 
                   <p className="text-gray-600 leading-relaxed">
                     {getAIAnalysis()}
@@ -731,12 +854,12 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   rounded-full
                   "
                 >
-                  Reiniciar
+                  {t.restart}
                 </button>
               </div>
 
               <div className="mt-8">
-                <h3 className="text-2xl mb-4">Recomendación Rinova</h3>
+                <h3 className="text-2xl mb-4">{t.recommendationTitle}</h3>
 
                 <div
                   className="
@@ -767,12 +890,9 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                 p-6
                 "
               >
-                <h3 className="text-2xl mb-3">Próximo Paso</h3>
+                <h3 className="text-2xl mb-3">{t.nextStep}</h3>
 
-                <p className="text-white/70">
-                  Nuestro equipo puede revisar tu perfil y proponerte
-                  oportunidades alineadas con tus objetivos.
-                </p>
+                <p className="text-white/70">{t.nextStepText}</p>
               </div>
             </motion.div>
           )}
@@ -784,18 +904,13 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
               animate={{ opacity: 1 }}
             >
               <MessageBubble>
-                Excelente.
-                <br />
-                <br />
-                Ya tengo una evaluación preliminar. Para que un asesor
-                especializado pueda revisar tu caso y contactarte, necesito
-                algunos datos.
+                <div className="whitespace-pre-line">{t.contactMessage}</div>
               </MessageBubble>
-              <h3 className="text-3xl mb-8">Datos de contacto</h3>
+              <h3 className="text-3xl mb-8">{t.contactTitle}</h3>
 
               <div className="space-y-4">
                 <input
-                  placeholder="Nombre"
+                  placeholder={t.contactName}
                   value={lead.name}
                   onChange={(e) => updateLead("name", e.target.value)}
                   className="
@@ -807,7 +922,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                 />
 
                 <input
-                  placeholder="WhatsApp"
+                  placeholder={t.contactPhone}
                   value={lead.phone}
                   onChange={(e) => updateLead("phone", e.target.value)}
                   className="
@@ -819,7 +934,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                 />
 
                 <input
-                  placeholder="Email"
+                  placeholder={t.contactEmail}
                   value={lead.email}
                   onChange={(e) => updateLead("email", e.target.value)}
                   className="
@@ -842,7 +957,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                 rounded-full
                 "
               >
-                Solicitar asesor
+                {t.requestAdvisor}
               </button>
             </motion.div>
           )}
@@ -884,7 +999,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   mb-6
                   "
                 >
-                  Perfil enviado
+                  {t.successTitle}
                 </h2>
 
                 <p
@@ -893,16 +1008,11 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   text-gray-600
                   max-w-2xl
                   mx-auto
+                  whitespace-pre-line
                   "
                 >
-                  Gracias {lead.name}.
-                  <br />
-                  <br />
-                  SofIA procesó tu perfil y lo envió al equipo de Rinova.
-                  <br />
-                  <br />
-                  Un asesor especializado revisará tu caso y se pondrá en
-                  contacto contigo.
+                  {lead.name && `${lead.name}\n\n`}
+                  {t.successMessage}
                 </p>
 
                 <button
@@ -928,7 +1038,7 @@ Mi recomendación es avanzar con una revisión personalizada junto al equipo de 
                   rounded-full
                   "
                 >
-                  Comenzar nuevamente
+                  {t.startAgain}
                 </button>
               </div>
             </motion.div>

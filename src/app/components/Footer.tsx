@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import {
   Instagram,
   Mail,
@@ -6,8 +7,11 @@ import {
   MapPin,
   MessageCircle,
 } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 export function Footer() {
+  const navigate = useNavigate();
+  const { language } = useLanguage();
   return (
     <section className="bg-[#F4EFE7] px-4 pb-4">
       <footer
@@ -45,15 +49,11 @@ export function Footer() {
                     justify-center
                   "
                 >
-                  <span className="font-heading text-xl">
-                    R
-                  </span>
+                  <span className="font-heading text-xl">R</span>
                 </div>
 
                 <div>
-                  <div className="font-heading text-2xl">
-                    RINOVA
-                  </div>
+                  <div className="font-heading text-2xl">RINOVA</div>
 
                   <div
                     className="
@@ -75,11 +75,11 @@ export function Footer() {
                   max-w-md
                 "
               >
-                Administración privada de activos
-                inmobiliarios en Punta del Este.
-                Combinamos experiencia,
-                tecnología e inteligencia artificial
-                para maximizar el valor de cada propiedad.
+                {language === "es"
+                  ? `Administración privada de activos inmobiliarios en Punta del Este.
+Combinamos experiencia, tecnología e inteligencia artificial para maximizar el valor de cada propiedad.`
+                  : `Private real estate asset management in Punta del Este.
+We combine experience, technology and artificial intelligence to maximize the value of every property.`}
               </p>
             </div>
 
@@ -92,60 +92,63 @@ export function Footer() {
                   mb-6
                 "
               >
-                Experiencias
+                {language === "es" ? "Experiencias" : "Experiences"}
               </h4>
 
               <ul className="space-y-4">
                 <li>
-                  <a
-                    href="#real-estate"
+                  <button
+                    onClick={() => navigate("/real-estate")}
                     className="
-                      text-gray-600
-                      hover:text-black
-                      transition-all
+                    text-gray-600
+                    hover:text-black
+                    transition-all
                     "
                   >
                     Real Estate
-                  </a>
+                  </button>
                 </li>
 
                 <li>
-                  <a
-                    href="#management"
+                  <button
+                    onClick={() => navigate("/management")}
                     className="
-                      text-gray-600
-                      hover:text-black
-                      transition-all
+                    text-gray-600
+                    hover:text-black
+                    transition-all
                     "
                   >
                     Property Management
-                  </a>
+                  </button>
+                  
                 </li>
 
                 <li>
-                  <a
-                    href="#renta"
+                  <button
+                    onClick={() => navigate("/renta")}
                     className="
-                      text-gray-600
-                      hover:text-black
-                      transition-all
+                    text-gray-600
+                    hover:text-black
+                    transition-all
                     "
                   >
-                    Renta
-                  </a>
+                    {language === "es" ? "Renta" : "Rental Income"}
+                  </button>
+                  
                 </li>
 
                 <li>
-                  <a
-                    href="#concierge"
+                  <button
+                    onClick={() => navigate("/concierge")}
                     className="
-                      text-gray-600
-                      hover:text-black
-                      transition-all
+                    text-gray-600
+                    hover:text-black
+                    transition-all
                     "
                   >
                     Concierge IA
-                  </a>
+                  </button>
+                  
                 </li>
               </ul>
             </div>
@@ -159,24 +162,20 @@ export function Footer() {
                   mb-6
                 "
               >
-                Contacto
+                {language === "es" ? "Contacto" : "Contact"}
               </h4>
 
               <ul className="space-y-5">
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
 
-                  <span className="text-gray-600">
-                    +54 9 11 5341 3959
-                  </span>
+                  <span className="text-gray-600">+54 9 11 5341 3959</span>
                 </li>
 
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />
 
-                  <span className="text-gray-600">
-                    contacto@rinova.com
-                  </span>
+                  <span className="text-gray-600">contacto@rinova.com</span>
                 </li>
 
                 <li className="flex items-center gap-3">
@@ -241,7 +240,9 @@ export function Footer() {
             "
           >
             <p className="text-gray-500 text-sm">
-              © 2026 RINOVA. Todos los derechos reservados.
+              {language === "es"
+                ? "© 2026 RINOVA. Todos los derechos reservados."
+                : "© 2026 RINOVA. All rights reserved."}
             </p>
 
             <p className="text-gray-400 text-sm">

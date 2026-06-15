@@ -26,20 +26,36 @@ export function LeadDetailDrawer({
 
   if (!lead) return null;
 
-  const handleSave = () => {
-    leadService.updateLead(lead.id, {
-      ...lead,
-      status: status as
-        | "new"
-        | "contacted"
-        | "closed",
-      notes,
-    });
+  const handleSave = async () => {
+  const updatedLead = {
+    ...lead,
 
-    onUpdated?.();
+    status: status as
+      | "new"
+      | "contacted"
+      | "closed",
 
-    alert("Lead actualizado");
+    notes,
+
+    timeline: [
+      ...(lead.timeline || []),
+
+      {
+        date: new Date().toISOString(),
+        event: `Estado cambiado a ${status}`,
+      },
+    ],
   };
+
+  await leadService.updateLead(
+  lead.id,
+  updatedLead
+);
+
+  onUpdated?.();
+
+  alert("Lead actualizado");
+};
 
   const getPriority = () => {
   if (lead.score >= 90) {
@@ -235,7 +251,12 @@ export function LeadDetailDrawer({
 >
   <strong>Resumen IA</strong>
 
-   <div
+  <p className="mt-3 leading-relaxed whitespace-pre-line">
+    {lead.summary}
+  </p>
+</div>
+
+<div
   className="
     bg-black
     text-white
@@ -260,10 +281,84 @@ export function LeadDetailDrawer({
   </p>
 </div>
 
-  <p className="mt-3 leading-relaxed">
-    {lead.summary}
-  </p>
-</div>
+    {lead.conversation &&
+  lead.conversation.length > 0 && (
+    <div
+      className="
+        bg-white
+        border
+        border-gray-200
+        rounded-[24px]
+        p-6
+      "
+    >
+      <strong>
+        Historial de conversación
+      </strong>
+
+      <div className="mt-4 space-y-3">
+        {lead.conversation.map(
+          (message, index) => (
+            <div
+              key={index}
+              className="
+                bg-[#F4EFE7]
+                rounded-xl
+                p-3
+                text-sm
+              "
+            >
+              {message}
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  )}
+
+     {lead.timeline &&
+  lead.timeline.length > 0 && (
+    <div
+      className="
+        bg-white
+        border
+        border-gray-200
+        rounded-[24px]
+        p-6
+      "
+    >
+      <strong>
+        Timeline comercial
+      </strong>
+
+      <div className="mt-4 space-y-4">
+        {[...lead.timeline]
+          .reverse()
+          .map((item, index) => (
+            <div
+              key={index}
+              className="
+                border-l-2
+                border-black
+                pl-4
+              "
+            >
+              <div className="text-xs text-gray-500">
+                {new Date(
+                  item.date
+                ).toLocaleString(
+                  "es-AR"
+                )}
+              </div>
+
+              <div className="mt-1">
+                {item.event}
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  )}
 
         <div>
           <strong>Estado</strong>

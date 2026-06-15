@@ -1,3 +1,4 @@
+
 export interface Lead {
   id: string;
 
@@ -23,12 +24,36 @@ export interface Lead {
 
   conversation: string[];
 
+  timeline: {
+  date: string;
+  event: string;
+  }[];
+
    status:
     | "new"
     | "contacted"
     | "closed";
 
-  notes: string;  
+  notes: string; 
+  
+  leadType:
+   | "INVESTOR"
+   | "BUYER"
+   | "SELLER"
+   | "OWNER"
+   | "PROSPECT";
+
+  temperature:
+   | "HOT"
+   | "WARM"
+   | "COLD";
+
+  actionSuggestion: string;
+
+  opportunityLevel:
+   | "ALTO"
+   | "MEDIO"
+   | "INICIAL"; 
 
   createdAt: string;
 }

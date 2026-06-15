@@ -7,6 +7,10 @@ import propertyManagementImg from "../../assets/images/rinova/manage.jpeg";
 import rentaImg from "../../assets/images/rinova/renta.jpeg";
 import conciergeImg from "../../assets/images/rinova/concierge.jpeg";
 
+import {
+  useLanguage,
+} from "../../context/LanguageContext";
+
 const experiences = [
   {
     id: "management",
@@ -48,6 +52,9 @@ export function ExperienceSelector() {
 
   const navigate = useNavigate();
 
+  const { language } =
+  useLanguage();
+
   return (
     <section
       id="experience-selector"
@@ -68,14 +75,19 @@ export function ExperienceSelector() {
           className="text-center mb-24"
         >
           <h2 className="font-heading text-5xl md:text-7xl mb-6">
-            Explorá Rinova
+            {
+  language === "es"
+    ? "Explorá Rinova"
+    : "Explore Rinova"
+}
           </h2>
 
           <p className="text-gray-600 max-w-3xl mx-auto text-lg md:text-xl">
-            Más que una inmobiliaria.
-            Descubrí nuestros servicios especializados para
-            propietarios, inversores y clientes que buscan una
-            experiencia diferente.
+            {
+  language === "es"
+    ? "Más que una inmobiliaria. Descubrí nuestros servicios especializados para propietarios, inversores y clientes que buscan una experiencia diferente."
+    : "More than a real estate company. Discover our specialized services for owners, investors and clients seeking a unique experience."
+}
           </p>
         </motion.div>
 
