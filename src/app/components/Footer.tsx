@@ -175,7 +175,7 @@ We combine experience, technology and artificial intelligence to maximize the va
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />
 
-                  <span className="text-gray-600">contacto@rinova.com</span>
+                  <span className="text-gray-600">administracionrinova@gmail.com</span>
                 </li>
 
                 <li className="flex items-center gap-3">
