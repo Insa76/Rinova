@@ -62,9 +62,7 @@ export function Footer() {
                       tracking-[4px]
                       text-gray-500
                     "
-                  >
-                    R E
-                  </div>
+                  ></div>
                 </div>
               </motion.div>
 
@@ -120,7 +118,6 @@ We combine experience, technology and artificial intelligence to maximize the va
                   >
                     Property Management
                   </button>
-                  
                 </li>
 
                 <li>
@@ -134,7 +131,6 @@ We combine experience, technology and artificial intelligence to maximize the va
                   >
                     {language === "es" ? "Renta" : "Rental Income"}
                   </button>
-                  
                 </li>
 
                 <li>
@@ -148,8 +144,10 @@ We combine experience, technology and artificial intelligence to maximize the va
                   >
                     Concierge IA
                   </button>
-                  
                 </li>
+                <a href="/admin" className="text-xs opacity-30">
+                  Admin
+                </a>
               </ul>
             </div>
 
@@ -175,7 +173,9 @@ We combine experience, technology and artificial intelligence to maximize the va
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />
 
-                  <span className="text-gray-600">administracionrinova@gmail.com</span>
+                  <span className="text-gray-600">
+                    administracionrinova@gmail.com
+                  </span>
                 </li>
 
                 <li className="flex items-center gap-3">

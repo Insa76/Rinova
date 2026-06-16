@@ -2,10 +2,6 @@
 @import './tailwind.css';
 @import './theme.css';
 
-body {
-  background-color: #3db8e9;
-  color: #706969;
-}
 
 html {
   scroll-behavior: smooth;
