@@ -145,7 +145,7 @@ We combine experience, technology and artificial intelligence to maximize the va
                     Concierge IA
                   </button>
                 </li>
-                <a href="/admin" className="text-xs opacity-30">
+                <a href="/admin" className="text-xs opacity-80">
                   Admin
                 </a>
               </ul>
